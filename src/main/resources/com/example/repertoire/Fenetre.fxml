@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repertoire.Rep_Controlleur">
+   <children>
+      <TextField fx:id="nom" layoutX="98.0" layoutY="14.0" prefHeight="24.0" prefWidth="432.0" />
+      <TextField fx:id="prenom" layoutX="98.0" layoutY="47.0" prefHeight="24.0" prefWidth="432.0" />
+      <TextField fx:id="rue" layoutX="98.0" layoutY="81.0" />
+      <TextField fx:id="cp" layoutX="275.0" layoutY="81.0" prefHeight="24.0" prefWidth="77.0" />
+      <TextField fx:id="tel" layoutX="99.0" layoutY="113.0" prefHeight="24.0" prefWidth="432.0" />
+      <TextField fx:id="ville" layoutX="360.0" layoutY="81.0" />
+      <Label layoutX="55.0" layoutY="18.0" text="NOM" />
+      <Label layoutX="37.0" layoutY="51.0" text="Prénom" />
+      <Label layoutX="20.0" layoutY="117.0" text="Téléphone" />
+      <Button fx:id="bAjout" layoutX="134.0" layoutY="152.0" mnemonicParsing="false" onAction="#ajouter" text="Ajouter" />
+      <Button fx:id="bAffPrec" layoutX="215.0" layoutY="152.0" mnemonicParsing="false" onAction="#precedent" prefWidth="85.0" text="Précédent" />
+      <Button fx:id="bAffSuiv" layoutX="315.0" layoutY="152.0" mnemonicParsing="false" onAction="#suivant" prefHeight="24.0" prefWidth="85.0" text="Suivant" />
+      <Button fx:id="bQuit" layoutX="412.0" layoutY="152.0" mnemonicParsing="false" onAction="#quitter" text="Quitter" />
+      <Label layoutX="36.0" layoutY="85.0" text="Adresse" />
+   </children>
+</AnchorPane>
