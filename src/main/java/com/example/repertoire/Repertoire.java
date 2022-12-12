@@ -2,8 +2,7 @@ package com.example.repertoire;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Repertoire
-{
+public class Repertoire {
 	//Attributs
 	private ArrayList<Personne> list;
 	
@@ -14,8 +13,7 @@ public class Repertoire
 	}
 	
 	/**Affiche toutes les personnes dans le répertoire*/
-	public String toString()
-	{
+	public String toString() {
 		String txt = "Le répertoire contient :\n";
 		for(Personne i : list)
 			txt += i+"\n";
@@ -23,15 +21,13 @@ public class Repertoire
 	}
 	
 	/**Ajoute une personne dans le répertoire*/
-	public void ajoutePersonne(Personne personne)
-	{
+	public void ajoutePersonne(Personne personne) {
 		list.add(personne);
 		Collections.sort(list);
 	}
 	
 	/**Recherche une personne dans le répertoire à partir du nom donné en paramètre*/
-	public Personne rechercheNom(String nom)
-	{
+	public Personne rechercheNom(String nom) {
 		for(Personne i : list)
 			if(i.getNom() == nom)
 				return i;
@@ -39,8 +35,7 @@ public class Repertoire
 	}
 	
 	/**Recherche une personne dans le répertoire à partir de son nom et de son prénom donné en paramètre*/
-	public Personne rechercheNomPrenom(String nom, String prenom)
-	{
+	public Personne rechercheNomPrenom(String nom, String prenom) {
 		for(Personne i : list)
 			if(i.getNom() == nom && i.getPrenom() == prenom)
 				return i;
