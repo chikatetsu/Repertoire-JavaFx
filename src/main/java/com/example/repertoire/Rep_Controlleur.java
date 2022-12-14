@@ -20,12 +20,7 @@ public class Rep_Controlleur {
 				new Adresse(rue.getText(), cp.getText(), ville.getText()), tel.getText()));
 		System.out.println(nom.getText()+" "+prenom.getText()+
 				" a été ajouté au répertoire à l'index "+(rep.taille()-1));
-		nom.setText("");
-		prenom.setText("");
-		rue.setText("");
-		cp.setText("");
-		ville.setText("");
-		tel.setText("");
+		setTextToBlanck();
 		numCourant = rep.taille();
 	}
 	
@@ -33,15 +28,7 @@ public class Rep_Controlleur {
 	public void precedent(ActionEvent event) {
 		if(numCourant > 0) {
 			numCourant--;
-			Personne p = rep.recherchePersonne(numCourant);
-			
-			nom.setText(p.getNom());
-			prenom.setText(p.getPrenom());
-			tel.setText(p.getTelephone());
-			rue.setText(p.getAdresse().getRue());
-			cp.setText(p.getAdresse().getCodePostal());
-			ville.setText(p.getAdresse().getVille());
-			System.out.println("Affichage de l'index "+numCourant);
+			setTextFromPersonne(numCourant);
 		}
 		else {
 			System.out.println("Vous êtes déjà à l'index 0");
@@ -55,24 +42,10 @@ public class Rep_Controlleur {
 			numCourant++;
 
 			if(numCourant == rep.taille()) {
-				nom.setText("");
-				prenom.setText("");
-				rue.setText("");
-				cp.setText("");
-				ville.setText("");
-				tel.setText("");
+				setTextToBlanck();
 			}
 			else {
-				Personne p = rep.recherchePersonne(numCourant);
-
-				nom.setText(p.getNom());
-				prenom.setText(p.getPrenom());
-				tel.setText(p.getTelephone());
-				rue.setText(p.getAdresse().getRue());
-				cp.setText(p.getAdresse().getCodePostal());
-				ville.setText(p.getAdresse().getVille());
-
-				System.out.println("Affichage de l'index "+numCourant);
+				setTextFromPersonne(numCourant);
 			}
 		}
 		else {
@@ -80,10 +53,34 @@ public class Rep_Controlleur {
 			(new Alert(AlertType.ERROR, "Vous êtes déjà à l'index maximal")).show();
 		}
 	}
-	
+
+	/**Affiche à l'écran la personne à l'index numCourant*/
+	private void setTextFromPersonne(int numCourant) {
+		Personne p = rep.recherchePersonne(numCourant);
+
+		nom.setText(p.getNom());
+		prenom.setText(p.getPrenom());
+		tel.setText(p.getTelephone());
+		rue.setText(p.getAdresse().getRue());
+		cp.setText(p.getAdresse().getCodePostal());
+		ville.setText(p.getAdresse().getVille());
+
+		System.out.println("Affichage de l'index "+numCourant);
+	}
+
+	/**Efface les champs de texte*/
+	private void setTextToBlanck() {
+		nom.setText("");
+		prenom.setText("");
+		rue.setText("");
+		cp.setText("");
+		ville.setText("");
+		tel.setText("");
+	}
+
 	/**Quitte l'application lorsque le bouton Quitter est actionné*/
 	public void quitter(ActionEvent event) {
+		System.out.println("Fermeture de la fenêtre");
 		Platform.exit();
-		System.out.println("La fenêtre a été fermé avec succès");
 	}
 }
