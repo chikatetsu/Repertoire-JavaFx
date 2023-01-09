@@ -7,8 +7,7 @@ public class Repertoire {
 	private ArrayList<Personne> list;
 	
 	//Constructeurs
-	public Repertoire()
-	{
+	public Repertoire() {
 		this.list = new ArrayList<Personne>();
 	}
 	
@@ -29,7 +28,7 @@ public class Repertoire {
 	/**Recherche une personne dans le répertoire à partir du nom donné en paramètre*/
 	public Personne rechercheNom(String nom) {
 		for(Personne i : list)
-			if(i.getNom() == nom)
+			if(i.getNom().equals(nom))
 				return i;
 		return null;
 	}
@@ -37,7 +36,7 @@ public class Repertoire {
 	/**Recherche une personne dans le répertoire à partir de son nom et de son prénom donné en paramètre*/
 	public Personne rechercheNomPrenom(String nom, String prenom) {
 		for(Personne i : list)
-			if(i.getNom() == nom && i.getPrenom() == prenom)
+			if(i.getNom().equals(nom) && i.getPrenom().equals(prenom))
 				return i;
 		return null;
 	}

@@ -3,25 +3,83 @@ package com.example.repertoire;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class Rep_Controlleur {
-	private Repertoire rep = new Repertoire();
-	private int numCourant = 0;
+import java.net.URL;
+import java.sql.*;
+import java.util.ResourceBundle;
+
+public class Rep_Controlleur implements Initializable {
+	private Repertoire rep;
+	private int numCourant;
 	@FXML private TextField nom, prenom, rue, cp, ville, tel;
 	@FXML private Button bAjout, bAffPrec, bAffSuiv, bQuit;
-	
+	private Connection conn;
+	private Statement statement;
+
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		rep = new Repertoire();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Chargement du driver réussi");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/repertoire","root","");
+			System.out.println("Connexion à la base de données réussi");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Erreur de chargement du driver : "+e);
+		} catch (SQLException e) {
+			throw new RuntimeException("Erreur lors de la connextion à la base de données : "+e);
+		}
+
+		try {
+			statement = conn.createStatement();
+			ResultSet res = statement.executeQuery("SELECT * FROM contact");
+			while(res.next()) {
+				Adresse adresse = new Adresse(res.getString("adresse"), res.getString("cp"), res.getString("ville"));
+				Personne personne = new Personne(res.getString("nom"), res.getString("prenom"), adresse, res.getString("tel"));
+				rep.ajoutePersonne(personne);
+			}
+			res.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		numCourant = 0;
+		setTextFromPersonne(numCourant);
+	}
+
 	/**Ajoute une personne au répertoire avec les informations du formulaire*/
 	public void ajouter(ActionEvent event) {
-		rep.ajoutePersonne(new Personne(nom.getText(), prenom.getText(),
-				new Adresse(rue.getText(), cp.getText(), ville.getText()), tel.getText()));
-		System.out.println(nom.getText()+" "+prenom.getText()+
-				" a été ajouté au répertoire à l'index "+(rep.taille()-1));
-		setTextToBlanck();
-		numCourant = rep.taille();
+		int res;
+		try {
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO contact(nom, prenom, adresse, ville, cp, tel) values (?,?,?,?,?,?)");
+			statement.setString(1, nom.getText());
+			statement.setString(2, prenom.getText());
+			statement.setString(3, rue.getText());
+			statement.setString(4, ville.getText());
+			statement.setString(5, cp.getText());
+			statement.setString(6, tel.getText());
+			res = statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		if(res == 1) {
+			(new Alert(AlertType.INFORMATION, "L'ajout a bien été réalisé")).show();
+			rep.ajoutePersonne(new Personne(nom.getText(), prenom.getText(),
+					new Adresse(rue.getText(), cp.getText(), ville.getText()), tel.getText()));
+			System.out.println(nom.getText()+" "+prenom.getText()+" a été ajouté au répertoire à l'index "+(rep.taille()-1));
+			setTextToBlanck();
+			numCourant = rep.taille();
+		}
+		else {
+			(new Alert(AlertType.ERROR, "L'ajout n'a pas été réalisé")).show();
+			System.err.println("L'ajout n'a pas été réalisé");
+		}
 	}
 	
 	/**Affiche la personne à l'index précédent*/
@@ -79,8 +137,10 @@ public class Rep_Controlleur {
 	}
 
 	/**Quitte l'application lorsque le bouton Quitter est actionné*/
-	public void quitter(ActionEvent event) {
+	public void quitter(ActionEvent event) throws SQLException {
 		System.out.println("Fermeture de la fenêtre");
+		statement.close();
+		conn.close();
 		Platform.exit();
 	}
 }
